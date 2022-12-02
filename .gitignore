@@ -1,0 +1,7 @@
+# IDE
+.idea
+
+# npm
+node_modules
+data/data.json
+package-lock.json
