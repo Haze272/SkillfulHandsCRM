@@ -1,0 +1,35 @@
+<section>
+    <h1>Заявки:</h1>
+</section>
+<table class="table">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>Дата поступления</th>
+        <th>Дата выпуска</th>
+        <th>Устройство</th>
+        <th>Проблема</th>
+        <th>Цена</th>
+        <th>Статус</th>
+        <th>Клиент</th>
+        <th>Тип</th>
+        <th>Работник</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each requests}}
+        <tr>
+            <td>{{this.id}}</td>
+            <td>{{this.date_admission}}</td>
+            <td>{{this.date_issue}}</td>
+            <td>{{device}}</td>
+            <td>{{problem}}</td>
+            <td>{{cost}}</td>
+            <td>{{status_name}}</td>
+            <td>{{client_name}}</td>
+            <td>{{service_name}}</td>
+            <td>{{worker_name}}</td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>

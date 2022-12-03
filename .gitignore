@@ -3,5 +3,11 @@
 
 # npm
 node_modules
-data/data.json
 package-lock.json
+
+
+# project
+data/data.json
+data/dbuser.json
+public/stylesheets/*.css
+public/stylesheets/*.map
