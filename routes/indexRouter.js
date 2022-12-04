@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const {response} = require("express");
 const pool = require("../data/config");
+const urlencodedParser = express.urlencoded({extended: false});
 
 indexRouter = express.Router({mergeParams: true});
 
@@ -35,12 +36,61 @@ router.get('/requests', (req, res, next) => {
     pool.query(sql, (error, result) => {
         if (error) throw error;
 
-        console.log(result);
         res.render('requests', {
             title: 'Заявки',
             requests: result
         });
     });
 });
+router.get('/clients', (req, res, next) => {
+    let sql = 'SELECT\n' +
+        'client.id,\n' +
+        'CONCAT(client.name, " ", client.last_name) as name,\n' +
+        'client.email,\n' +
+        'client.phone\n' +
+        'FROM client;';
+    pool.query(sql, (error, result) => {
+        if (error) throw error;
+
+        res.render('clients', {
+            title: 'Клиенты',
+            clients: result
+        });
+    });
+});
+router.get('/clients/edit/:id', urlencodedParser, (req, res, next) => {
+
+    pool.query('SELECT * FROM client WHERE id=' + req.params["id"] + ';', (error, result) => {
+        if (error) throw error;
+
+        let client = result[0];
+
+        console.log(client);
+        res.render('edit/editClient', {
+            title: 'Редактирование клиента',
+            client: client
+        });
+    });
+});
+
+router.post('/clients/edit/:id', urlencodedParser, (req, res) => {
+    if (!req.body) {
+        return res.sendStatus(400);
+    }
+    console.log(req.body);
+    pool.query(
+        'UPDATE client\n' +
+        'SET \n' +
+        'name = \'' + req.body.firstName + '\',\n' +
+        'last_name = \'' + req.body.secondName + '\',\n' +
+        'email = \'' + req.body.email + '\',\n' +
+        'phone = \'' + req.body.phone + '\'\n' +
+        'WHERE id = ' + req.params["id"] + ';',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/clients');
+        }
+    );
+})
 
 module.exports = router;

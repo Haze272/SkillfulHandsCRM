@@ -123,6 +123,7 @@ header {
       width: 48px; }
     .logo-wrapper .header-logo span {
       color: white;
+      font-family: "Lucida Console";
       font-size: 18px;
       font-weight: 500; }
 
@@ -197,32 +198,52 @@ nav li:hover > .submenu {
   width: 100%;
   border: none;
   margin-bottom: 20px; }
+  .table thead th {
+    font-weight: bold;
+    text-align: left;
+    border: none;
+    padding: 10px 15px;
+    background: #d8d8d8;
+    font-size: 14px;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd; }
+  .table thead tr th:first-child, .table thead .table tbody tr td:first-child {
+    border-left: none; }
+  .table thead tr th:last-child, .table thead .table tbody tr td:last-child {
+    border-right: none; }
+  .table tbody td {
+    text-align: left;
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    padding: 10px 15px;
+    font-size: 14px;
+    vertical-align: top; }
+  .table tbody tr:hover {
+    background: #d9d9d9 !important; }
+  .table tbody tr:nth-child(even) {
+    background: #f3f3f3; }
+  .table tbody .actions {
+    display: flex;
+    justify-content: space-evenly; }
+    .table tbody .actions a.edit {
+      width: 18px;
+      height: 18px; }
+    .table tbody .actions input[type=image] {
+      padding: 0;
+      background-color: transparent;
+      width: 18px;
+      height: 18px; }
 
-.table thead th {
-  font-weight: bold;
-  text-align: left;
-  border: none;
-  padding: 10px 15px;
-  background: #d8d8d8;
-  font-size: 14px;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd; }
-
-.table tbody td {
-  text-align: left;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
-  padding: 10px 15px;
-  font-size: 14px;
-  vertical-align: top; }
-
-.table thead tr th:first-child, .table tbody tr td:first-child {
-  border-left: none; }
-
-.table thead tr th:last-child, .table tbody tr td:last-child {
-  border-right: none; }
-
-.table tbody tr:nth-child(even) {
-  background: #f3f3f3; }
+.edit-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; }
+  .edit-section .field {
+    display: flex;
+    flex-direction: column; }
+  .edit-section .submit-wrapper input:hover {
+    background-color: var(--header-bg-color);
+    color: white;
+    cursor: pointer; }
 
 /*# sourceMappingURL=styles.css.map */

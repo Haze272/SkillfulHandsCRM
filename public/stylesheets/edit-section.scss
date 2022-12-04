@@ -1,0 +1,26 @@
+.edit-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .field {
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+
+    }
+
+    &__input {
+
+    }
+  }
+
+  .submit-wrapper {
+    input:hover {
+      background-color: var(--header-bg-color);
+      color: white;
+      cursor: pointer;
+    }
+  }
+}

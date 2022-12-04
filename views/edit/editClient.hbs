@@ -1,0 +1,47 @@
+<section>
+    <h1>Редактирование клиента №{{client.id}}:</h1>
+    <form method="post">
+        <div class="edit-section">
+            <div class="field">
+                <span class="field__header">Имя</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        value="{{client.name}}"
+                        name="firstName"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Фамилия</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        value="{{client.last_name}}"
+                        name="secondName"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Email</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        value="{{client.email}}"
+                        name="email"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Телефон</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        value="{{client.phone}}"
+                        name="phone"
+                >
+            </div>
+
+            <div class="submit-wrapper">
+                <input type="submit" value="Сохранить информацию">
+            </div>
+        </div>
+    </form>
+</section>
