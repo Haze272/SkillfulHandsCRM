@@ -11,14 +11,14 @@ router.get('/', (req, res, next) => {
     res.render('index', { title: 'Главная' });
 });
 
-router.get('/requests', (req, res, next) => {
+router.get('/requests/list', (req, res, next) => {
     let sql = 'SELECT\n' +
         'request.id,\n' +
         'request.date_admission,\n' +
         'request.date_issue,\n' +
         'request.device,\n' +
         'request.problem,\n' +
-        'request.cost,\n' +
+        'SUM(component.cost) cost,\n' +
         'status.name as status_name,\n' +
         'CONCAT(client.name, " ", client.last_name) as client_name,\n' +
         'service.name as service_name,\n' +
@@ -32,17 +32,20 @@ router.get('/requests', (req, res, next) => {
         'request.service_id=service.id\n' +
         'JOIN worker ON\n' +
         'request.worker_id=worker.id\n' +
+        'INNER JOIN component ON \n' +
+        'request.id = component.request_id\n' +
+        'GROUP BY request.id;\n' +
         ';';
     pool.query(sql, (error, result) => {
         if (error) throw error;
 
-        res.render('requests', {
+        res.render('lists/requests', {
             title: 'Заявки',
             requests: result
         });
     });
 });
-router.get('/clients', (req, res, next) => {
+router.get('/clients/list', (req, res, next) => {
     let sql = 'SELECT\n' +
         'client.id,\n' +
         'CONCAT(client.name, " ", client.last_name) as name,\n' +
@@ -52,7 +55,7 @@ router.get('/clients', (req, res, next) => {
     pool.query(sql, (error, result) => {
         if (error) throw error;
 
-        res.render('clients', {
+        res.render('lists/clients', {
             title: 'Клиенты',
             clients: result
         });
@@ -72,7 +75,6 @@ router.get('/clients/edit/:id', urlencodedParser, (req, res, next) => {
         });
     });
 });
-
 router.post('/clients/edit/:id', urlencodedParser, (req, res) => {
     if (!req.body) {
         return res.sendStatus(400);
@@ -88,9 +90,45 @@ router.post('/clients/edit/:id', urlencodedParser, (req, res) => {
         'WHERE id = ' + req.params["id"] + ';',
         (err) => {
             if (err) console.log(err);
-            res.redirect('/clients');
+            res.redirect('/clients/list');
         }
     );
-})
+});
+
+router.get('/vendors/list', (req, res, next) => {
+    let sql = 'SELECT * FROM vendor';
+    pool.query(sql, (error, result) => {
+        if (error) throw error;
+
+        res.render('lists/vendors', {
+            title: 'Поставщики',
+            services: result
+        });
+    });
+});
+
+router.get('/components/list', (req, res, next) => {
+    let sql = '';
+    pool.query(sql, (error, result) => {
+        if (error) throw error;
+
+        res.render('lists/components', {
+            title: 'Компоненты',
+            services: result
+        });
+    });
+});
+
+router.get('/workers/list', (req, res, next) => {
+    let sql = '';
+    pool.query(sql, (error, result) => {
+        if (error) throw error;
+
+        res.render('lists/workers', {
+            title: 'Работники',
+            services: result
+        });
+    });
+});
 
 module.exports = router;

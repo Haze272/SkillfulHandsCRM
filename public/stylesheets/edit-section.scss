@@ -16,11 +16,24 @@
     }
   }
 
-  .submit-wrapper {
+  .actions-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
     input:hover {
       background-color: var(--header-bg-color);
       color: white;
       cursor: pointer;
+    }
+
+    input.btn-delete {
+      background-color: var(--delete-btn-color-bg);
+      color: white;
+    }
+
+    input.btn-delete:hover {
+      opacity: .8;
     }
   }
 }

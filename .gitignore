@@ -11,3 +11,5 @@ data/data.json
 data/dbuser.json
 public/stylesheets/*.css
 public/stylesheets/*.map
+public/stylesheets/styles.css
+public/stylesheets/styles.css.map
