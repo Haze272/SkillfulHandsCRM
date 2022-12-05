@@ -60,7 +60,7 @@ requestsRouter.get('/edit/:id', urlencodedParser, (req, res, next) => {});
 requestsRouter.post('/edit/:id', urlencodedParser, (req, res) => {});
 requestsRouter.post('/delete/:id', urlencodedParser, (req, res) => {});
 requestsRouter.get('/create', urlencodedParser, (req, res) => {});
-requestsRouter.post('/create', urlencodedParser, (req, res) => {})
+requestsRouter.post('/create', urlencodedParser, (req, res) => {});
 
 clientsRouter.get('/list', (req, res, next) => {
     let sql = 'SELECT\n' +
@@ -112,6 +112,29 @@ clientsRouter.post('/edit/:id', urlencodedParser, (req, res) => {
     );
 });
 clientsRouter.post('/delete/:id', urlencodedParser, (req, res) => {});
+clientsRouter.get('/create', urlencodedParser, (req, res) => {
+    res.render('create/createClient', {
+        title: 'Создание клиента'
+    });
+});
+clientsRouter.post('/create', urlencodedParser, (req, res) => {
+    if (!req.body) {
+        return res.sendStatus(400);
+    }
+    console.log(req.body);
+    pool.query(
+        'INSERT INTO client (last_name, name, email, phone)\n' +
+        'VALUES (\n' +
+        '\'' + req.body.secondName +'\', \n' +
+        '\'' + req.body.firstName +'\', \n' +
+        '\'' + req.body.email +'\', \n' +
+        '\'' + req.body.phone +'\');',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/clients/list');
+        }
+    );
+});
 
 vendorsRouter.get('/list', (req, res, next) => {
     let sql = 'SELECT * FROM vendor';
@@ -124,11 +147,68 @@ vendorsRouter.get('/list', (req, res, next) => {
         });
     });
 });
-vendorsRouter.get('/edit/:id', urlencodedParser, (req, res) => {});
-vendorsRouter.post('/edit/:id', urlencodedParser, (req, res) => {});
-vendorsRouter.post('/delete/:id', urlencodedParser, (req, res) => {});
-vendorsRouter.get('/create', urlencodedParser, (req, res) => {});
-vendorsRouter.post('/create', urlencodedParser, (req, res) => {});
+vendorsRouter.get('/edit/:id', urlencodedParser, (req, res) => {
+    pool.query('SELECT * FROM vendor WHERE id=' + req.params["id"] + ';', (error, result) => {
+        if (error) throw error;
+
+        let vendor = result[0];
+
+        console.log(vendor);
+        res.render('edit/editVendor', {
+            title: 'Редактирование поставщика',
+            vendor: vendor
+        });
+    });
+});
+vendorsRouter.post('/edit/:id', urlencodedParser, (req, res) => {
+    if (!req.body) {
+        return res.sendStatus(400);
+    }
+    console.log(req.body);
+    pool.query(
+        'UPDATE vendor\n' +
+        'SET\n' +
+        'last_name = \'' + req.body.secondName + '\',\n' +
+        'name = \'' + req.body.firstName + '\',\n' +
+        'patronymic = \'' + req.body.patronymic + '\',\n' +
+        'company = \'' + req.body.company + '\',\n' +
+        'email = \'' + req.body.email + '\',\n' +
+        'phone = \'' + req.body.phone + '\'\n' +
+        'WHERE id = \'' + req.params["id"] + '\';',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/vendors/list');
+        }
+    );
+});
+vendorsRouter.post('/delete/:id', urlencodedParser, (req, res) => {
+
+});
+vendorsRouter.get('/create', urlencodedParser, (req, res) => {
+    res.render('create/createVendor', {
+        title: 'Создание поставщика'
+    });
+});
+vendorsRouter.post('/create', urlencodedParser, (req, res) => {
+    if (!req.body) {
+        return res.sendStatus(400);
+    }
+    console.log(req.body);
+    pool.query(
+        'INSERT INTO vendor (last_name, name, patronymic, company, email, phone)\n' +
+        'VALUES (\n' +
+        '\'' + req.body.secondName +'\', \n' +
+        '\'' + req.body.firstName +'\', \n' +
+        '\'' + req.body.patronymic +'\', \n' +
+        '\'' + req.body.company +'\', \n' +
+        '\'' + req.body.email +'\', \n' +
+        '\'' + req.body.phone +'\');',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/vendors/list');
+        }
+    );
+});
 
 workersRouter.get('/list', (req, res, next) => {
     let sql = 'SELECT * FROM worker';
@@ -141,8 +221,44 @@ workersRouter.get('/list', (req, res, next) => {
         });
     });
 });
-workersRouter.get('/edit/:id', urlencodedParser, (req, res) => {});
-workersRouter.post('/edit/:id', urlencodedParser, (req, res) => {});
+workersRouter.get('/edit/:id', urlencodedParser, (req, res) => {
+    pool.query('SELECT * FROM worker WHERE id=' + req.params["id"] + ';', (error, result) => {
+        if (error) throw error;
+
+        let worker = result[0];
+
+        console.log(worker);
+        res.render('edit/editWorker', {
+            title: 'Редактирование работника',
+            worker: worker
+        });
+    });
+});
+workersRouter.post('/edit/:id', urlencodedParser, (req, res) => {
+    if (!req.body) {
+        return res.sendStatus(400);
+    }
+    console.log(req.body);
+    pool.query(
+        'UPDATE worker\n' +
+        'SET\n' +
+        'last_name = \'' + req.body.secondName + '\',\n' +
+        'name = \'' + req.body.firstName + '\',\n' +
+        'patronymic = \'' + req.body.patronymic + '\',\n' +
+        'post = \'' + req.body.post + '\',\n' +
+        'email = \'' + req.body.email + '\',\n' +
+        'phone = \'' + req.body.phone + '\',\n' +
+        'address = \'' + req.body.address + '\',\n' +
+        'passport = \'' + req.body.passport + '\',\n' +
+        'login = \'' + req.body.login + '\',\n' +
+        'password = \'' + req.body.password + '\'\n' +
+        'WHERE id = ' + req.params["id"] + ';',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/workers/list');
+        }
+    );
+});
 workersRouter.post('/delete/:id', urlencodedParser, (req, res) => {});
 workersRouter.get('/create', urlencodedParser, (req, res) => {});
 workersRouter.post('/create', urlencodedParser, (req, res) => {});

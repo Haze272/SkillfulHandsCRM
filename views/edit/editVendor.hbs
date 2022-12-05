@@ -1,0 +1,66 @@
+<section>
+    <h1>Редактирование поставщика №{{vendor.id}}:</h1>
+    <form method="post">
+        <div class="edit-section">
+            <div class="field">
+                <span class="field__header">Фамилия</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        value="{{vendor.last_name}}"
+                        name="secondName"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Имя</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        value="{{vendor.name}}"
+                        name="firstName"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Отчество</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        value="{{vendor.patronymic}}"
+                        name="patronymic"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Компания</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        value="{{vendor.company}}"
+                        name="company"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Email</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        value="{{vendor.email}}"
+                        name="email"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Телефон</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        value="{{vendor.phone}}"
+                        name="phone"
+                >
+            </div>
+
+            <div class="actions-wrapper">
+                <input type="submit" value="Сохранить информацию">
+                <input type="button" class="btn-delete" value="Удалить запись">
+            </div>
+        </div>
+    </form>
+</section>

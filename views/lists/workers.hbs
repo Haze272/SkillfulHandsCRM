@@ -1,5 +1,5 @@
 <section>
-    <h1>Поставщики:</h1>
+    <h1>Работники:</h1>
 </section>
 <table class="table">
     <thead>
@@ -10,9 +10,10 @@
         <th>Отчество</th>
         <th>Должность</th>
         <th>Email</th>
-        <th>phone</th>
+        <th>Телефон</th>
         <th>Адрес</th>
         <th>Паспорт</th>
+        <th>Логин</th>
         <th>Пароль</th>
         <th>Действия</th>
     </tr>
@@ -21,13 +22,14 @@
     {{#each workers}}
         <tr>
             <td>{{this.id}}</td>
-            <td>{{this.name}}</td>
             <td>{{this.last_name}}</td>
+            <td>{{this.name}}</td>
             <td>{{this.patronymic}}</td>
+            <td>{{this.post}}</td>
             <td>{{this.email}}</td>
             <td>{{this.phone}}</td>
             <td>{{this.address}}</td>
-            <td>{{this.password}}</td>
+            <td>{{this.passport}}</td>
             <td>{{this.login}}</td>
             <td>{{this.password}}</td>
             <td>
