@@ -4,14 +4,24 @@ const {response} = require("express");
 const pool = require("../data/config");
 const urlencodedParser = express.urlencoded({extended: false});
 
-indexRouter = express.Router({mergeParams: true});
+requestsRouter = express.Router({mergeParams: true});
+clientsRouter = express.Router({mergeParams: true});
+vendorsRouter = express.Router({mergeParams: true});
+workersRouter = express.Router({mergeParams: true});
+servicesRouter = express.Router({mergeParams: true});
 
 /* GET home page. */
 router.get('/', (req, res, next) => {
     res.render('index', { title: 'Главная' });
 });
 
-router.get('/requests/list', (req, res, next) => {
+router.use('/requests', requestsRouter);
+router.use('/clients', clientsRouter);
+router.use('/vendors', vendorsRouter);
+router.use('/workers', workersRouter);
+router.use('/services', servicesRouter);
+
+requestsRouter.get('/list', (req, res, next) => {
     let sql = 'SELECT\n' +
         'request.id,\n' +
         'request.date_admission,\n' +
@@ -45,7 +55,14 @@ router.get('/requests/list', (req, res, next) => {
         });
     });
 });
-router.get('/clients/list', (req, res, next) => {
+requestsRouter.get('/detail/:id', (req, res) => {})
+requestsRouter.get('/edit/:id', urlencodedParser, (req, res, next) => {});
+requestsRouter.post('/edit/:id', urlencodedParser, (req, res) => {});
+requestsRouter.post('/delete/:id', urlencodedParser, (req, res) => {});
+requestsRouter.get('/create', urlencodedParser, (req, res) => {});
+requestsRouter.post('/create', urlencodedParser, (req, res) => {})
+
+clientsRouter.get('/list', (req, res, next) => {
     let sql = 'SELECT\n' +
         'client.id,\n' +
         'CONCAT(client.name, " ", client.last_name) as name,\n' +
@@ -61,7 +78,7 @@ router.get('/clients/list', (req, res, next) => {
         });
     });
 });
-router.get('/clients/edit/:id', urlencodedParser, (req, res, next) => {
+clientsRouter.get('/edit/:id', urlencodedParser, (req, res, next) => {
 
     pool.query('SELECT * FROM client WHERE id=' + req.params["id"] + ';', (error, result) => {
         if (error) throw error;
@@ -75,7 +92,7 @@ router.get('/clients/edit/:id', urlencodedParser, (req, res, next) => {
         });
     });
 });
-router.post('/clients/edit/:id', urlencodedParser, (req, res) => {
+clientsRouter.post('/edit/:id', urlencodedParser, (req, res) => {
     if (!req.body) {
         return res.sendStatus(400);
     }
@@ -94,41 +111,57 @@ router.post('/clients/edit/:id', urlencodedParser, (req, res) => {
         }
     );
 });
+clientsRouter.post('/delete/:id', urlencodedParser, (req, res) => {});
 
-router.get('/vendors/list', (req, res, next) => {
+vendorsRouter.get('/list', (req, res, next) => {
     let sql = 'SELECT * FROM vendor';
     pool.query(sql, (error, result) => {
         if (error) throw error;
 
         res.render('lists/vendors', {
             title: 'Поставщики',
-            services: result
+            vendors: result
         });
     });
 });
+vendorsRouter.get('/edit/:id', urlencodedParser, (req, res) => {});
+vendorsRouter.post('/edit/:id', urlencodedParser, (req, res) => {});
+vendorsRouter.post('/delete/:id', urlencodedParser, (req, res) => {});
+vendorsRouter.get('/create', urlencodedParser, (req, res) => {});
+vendorsRouter.post('/create', urlencodedParser, (req, res) => {});
 
-router.get('/components/list', (req, res, next) => {
-    let sql = '';
-    pool.query(sql, (error, result) => {
-        if (error) throw error;
-
-        res.render('lists/components', {
-            title: 'Компоненты',
-            services: result
-        });
-    });
-});
-
-router.get('/workers/list', (req, res, next) => {
-    let sql = '';
+workersRouter.get('/list', (req, res, next) => {
+    let sql = 'SELECT * FROM worker';
     pool.query(sql, (error, result) => {
         if (error) throw error;
 
         res.render('lists/workers', {
             title: 'Работники',
+            workers: result
+        });
+    });
+});
+workersRouter.get('/edit/:id', urlencodedParser, (req, res) => {});
+workersRouter.post('/edit/:id', urlencodedParser, (req, res) => {});
+workersRouter.post('/delete/:id', urlencodedParser, (req, res) => {});
+workersRouter.get('/create', urlencodedParser, (req, res) => {});
+workersRouter.post('/create', urlencodedParser, (req, res) => {});
+
+servicesRouter.get('/list', (req, res, next) => {
+    let sql = 'SELECT * FROM service';
+    pool.query(sql, (error, result) => {
+        if (error) throw error;
+
+        res.render('lists/services', {
+            title: 'Услуги',
             services: result
         });
     });
 });
+servicesRouter.get('/edit/:id', urlencodedParser, (req, res) => {});
+servicesRouter.post('/edit/:id', urlencodedParser, (req, res) => {});
+servicesRouter.post('/delete/:id', urlencodedParser, (req, res) => {});
+servicesRouter.get('/create', urlencodedParser, (req, res) => {});
+servicesRouter.post('/create', urlencodedParser, (req, res) => {});
 
 module.exports = router;

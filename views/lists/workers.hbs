@@ -1,0 +1,44 @@
+<section>
+    <h1>Поставщики:</h1>
+</section>
+<table class="table">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>Фамилия</th>
+        <th>Имя</th>
+        <th>Отчество</th>
+        <th>Должность</th>
+        <th>Email</th>
+        <th>phone</th>
+        <th>Адрес</th>
+        <th>Паспорт</th>
+        <th>Пароль</th>
+        <th>Действия</th>
+    </tr>
+    </thead>
+    <tbody>
+    {{#each workers}}
+        <tr>
+            <td>{{this.id}}</td>
+            <td>{{this.name}}</td>
+            <td>{{this.last_name}}</td>
+            <td>{{this.patronymic}}</td>
+            <td>{{this.email}}</td>
+            <td>{{this.phone}}</td>
+            <td>{{this.address}}</td>
+            <td>{{this.password}}</td>
+            <td>{{this.login}}</td>
+            <td>{{this.password}}</td>
+            <td>
+                <div class="actions">
+                    <a class="edit" href="edit/{{this.id}}">
+                        <img src="../images/edit.svg" alt="edit">
+                    </a>
+                    <input type="image" src="../images/delete.svg" name="delete" alt="delete"/>
+                </div>
+            </td>
+        </tr>
+    {{/each}}
+    </tbody>
+</table>
