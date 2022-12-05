@@ -111,7 +111,15 @@ clientsRouter.post('/edit/:id', urlencodedParser, (req, res) => {
         }
     );
 });
-clientsRouter.post('/delete/:id', urlencodedParser, (req, res) => {});
+clientsRouter.get('/delete/:id', (req, res) => {
+    pool.query(
+        'DELETE FROM client WHERE id=' + req.params["id"] + ';',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/clients/list');
+        }
+    );
+});
 clientsRouter.get('/create', urlencodedParser, (req, res) => {
     res.render('create/createClient', {
         title: 'Создание клиента'
