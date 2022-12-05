@@ -58,7 +58,15 @@ requestsRouter.get('/list', (req, res, next) => {
 requestsRouter.get('/detail/:id', (req, res) => {})
 requestsRouter.get('/edit/:id', urlencodedParser, (req, res, next) => {});
 requestsRouter.post('/edit/:id', urlencodedParser, (req, res) => {});
-requestsRouter.post('/delete/:id', urlencodedParser, (req, res) => {});
+requestsRouter.get('/delete/:id', urlencodedParser, (req, res) => {
+    pool.query(
+        'DELETE FROM request WHERE id=' + req.params["id"] + ';',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/request/list');
+        }
+    );
+});
 requestsRouter.get('/create', urlencodedParser, (req, res) => {});
 requestsRouter.post('/create', urlencodedParser, (req, res) => {});
 
@@ -189,8 +197,14 @@ vendorsRouter.post('/edit/:id', urlencodedParser, (req, res) => {
         }
     );
 });
-vendorsRouter.post('/delete/:id', urlencodedParser, (req, res) => {
-
+vendorsRouter.get('/delete/:id', urlencodedParser, (req, res) => {
+    pool.query(
+        'DELETE FROM vendors WHERE id=' + req.params["id"] + ';',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/vendors/list');
+        }
+    );
 });
 vendorsRouter.get('/create', urlencodedParser, (req, res) => {
     res.render('create/createVendor', {
@@ -267,7 +281,15 @@ workersRouter.post('/edit/:id', urlencodedParser, (req, res) => {
         }
     );
 });
-workersRouter.post('/delete/:id', urlencodedParser, (req, res) => {});
+workersRouter.get('/delete/:id', urlencodedParser, (req, res) => {
+    pool.query(
+        'DELETE FROM worker WHERE id=' + req.params["id"] + ';',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/workers/list');
+        }
+    );
+});
 workersRouter.get('/create', urlencodedParser, (req, res) => {});
 workersRouter.post('/create', urlencodedParser, (req, res) => {});
 
@@ -284,7 +306,15 @@ servicesRouter.get('/list', (req, res, next) => {
 });
 servicesRouter.get('/edit/:id', urlencodedParser, (req, res) => {});
 servicesRouter.post('/edit/:id', urlencodedParser, (req, res) => {});
-servicesRouter.post('/delete/:id', urlencodedParser, (req, res) => {});
+servicesRouter.get('/delete/:id', urlencodedParser, (req, res) => {
+    pool.query(
+        'DELETE FROM service WHERE id=' + req.params["id"] + ';',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/services/list');
+        }
+    );
+});
 servicesRouter.get('/create', urlencodedParser, (req, res) => {});
 servicesRouter.post('/create', urlencodedParser, (req, res) => {});
 
