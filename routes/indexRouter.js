@@ -304,8 +304,35 @@ servicesRouter.get('/list', (req, res, next) => {
         });
     });
 });
-servicesRouter.get('/edit/:id', urlencodedParser, (req, res) => {});
-servicesRouter.post('/edit/:id', urlencodedParser, (req, res) => {});
+servicesRouter.get('/edit/:id', urlencodedParser, (req, res) => {
+    pool.query('SELECT * FROM service WHERE id=' + req.params["id"] + ';', (error, result) => {
+        if (error) throw error;
+
+        let service = result[0];
+
+        console.log(service);
+        res.render('edit/editService', {
+            title: 'Редактирование услуги',
+            service: service
+        });
+    });
+});
+servicesRouter.post('/edit/:id', urlencodedParser, (req, res) => {
+    if (!req.body) {
+        return res.sendStatus(400);
+    }
+    console.log(req.body);
+    pool.query(
+        'UPDATE service SET\n' +
+        'cost = \'' + req.body.cost + '\', \n' +
+        'name = \'' + req.body.name + '\'\n' +
+        'WHERE id=' + req.params["id"] + ';',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/services/list');
+        }
+    );
+});
 servicesRouter.get('/delete/:id', urlencodedParser, (req, res) => {
     pool.query(
         'DELETE FROM service WHERE id=' + req.params["id"] + ';',
@@ -315,7 +342,25 @@ servicesRouter.get('/delete/:id', urlencodedParser, (req, res) => {
         }
     );
 });
-servicesRouter.get('/create', urlencodedParser, (req, res) => {});
-servicesRouter.post('/create', urlencodedParser, (req, res) => {});
+servicesRouter.get('/create', urlencodedParser, (req, res) => {
+    res.render('create/createService', {
+        title: 'Создание услуги'
+    });
+});
+servicesRouter.post('/create', urlencodedParser, (req, res) => {
+    // TODO
+    if (!req.body) {
+        return res.sendStatus(400);
+    }
+    console.log(req.body);
+    pool.query(
+        'INSERT INTO service (cost, name) VALUES\n' +
+        '(\'' + req.body.cost + '\', \'' + req.body.name + '\');',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/services/list');
+        }
+    );
+});
 
 module.exports = router;

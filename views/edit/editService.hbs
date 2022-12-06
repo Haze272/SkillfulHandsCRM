@@ -1,0 +1,30 @@
+<section>
+    <h1>Редактирование услуги №{{service.id}}:</h1>
+    <form method="post">
+        <div class="edit-section">
+            <div class="field">
+                <span class="field__header">Название</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        value="{{service.name}}"
+                        name="name"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Стоимость</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        value="{{service.cost}}"
+                        name="cost"
+                >
+            </div>
+
+            <div class="actions-wrapper">
+                <input type="submit" value="Сохранить информацию">
+                <a href="/services/delete/{{service.id}}" class="btn-delete">Удалить запись</a>
+            </div>
+        </div>
+    </form>
+</section>
