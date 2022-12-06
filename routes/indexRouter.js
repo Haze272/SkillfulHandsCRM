@@ -290,8 +290,38 @@ workersRouter.get('/delete/:id', urlencodedParser, (req, res) => {
         }
     );
 });
-workersRouter.get('/create', urlencodedParser, (req, res) => {});
-workersRouter.post('/create', urlencodedParser, (req, res) => {});
+workersRouter.get('/create', urlencodedParser, (req, res) => {
+    res.render('create/createWorker', {
+        title: 'Создание работника'
+    });
+});
+workersRouter.post('/create', urlencodedParser, (req, res) => {
+    if (!req.body) {
+        return res.sendStatus(400);
+    }
+    console.log(req.body);
+    pool.query(
+        'INSERT INTO worker \n' +
+        '(last_name, name, patronymic, post, email, phone, address, passport, login, password)\n' +
+        'VALUES\n' +
+        '(\n' +
+        '\'' + req.body.secondName + '\', \n' +
+        '\'' + req.body.firstName + '\', \n' +
+        '\'' + req.body.patronymic + '\', \n' +
+        '\'' + req.body.post + '\', \n' +
+        '\'' + req.body.email + '\', \n' +
+        '\'' + req.body.phone + '\',\n' +
+        ' \'' + req.body.address + '\',\n' +
+        ' \'' + req.body.passport + '\', \n' +
+        ' \'' + req.body.login + '\', \n' +
+        ' \'' + req.body.password + '\'\n' +
+        ' );',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/workers/list');
+        }
+    );
+});
 
 servicesRouter.get('/list', (req, res, next) => {
     let sql = 'SELECT * FROM service';
@@ -348,14 +378,14 @@ servicesRouter.get('/create', urlencodedParser, (req, res) => {
     });
 });
 servicesRouter.post('/create', urlencodedParser, (req, res) => {
-    // TODO
     if (!req.body) {
         return res.sendStatus(400);
     }
     console.log(req.body);
     pool.query(
         'INSERT INTO service (cost, name) VALUES\n' +
-        '(\'' + req.body.cost + '\', \'' + req.body.name + '\');',
+        '(\'' + req.body.cost + '\', ' +
+        '\'' + req.body.name + '\');',
         (err) => {
             if (err) console.log(err);
             res.redirect('/services/list');
