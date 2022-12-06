@@ -1,0 +1,63 @@
+<section>
+    <h1>Создание заявки:</h1>
+    <form method="post">
+        <div class="edit-section">
+            <div class="field">
+                <span class="field__header">Дата поступления</span>
+                <input
+                        class="field__input"
+                        type="datetime-local"
+                        name="dateAdmission"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Устройство</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        name="device"
+                        placeholder="Apple iPhone 13 pro max"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Проблема</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        name="problem"
+                        placeholder="Разибитый экран"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Клиент:</span>
+                <span>Введите id клиента:</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        name="client_id"
+                        placeholder="0"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Услуга</span>
+                <select name="service_id">
+                    {{#each services}}
+                        <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="field">
+                <span class="field__header">Работник</span>
+                <select name="worker_id">
+                    {{#each workers}}
+                        <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="actions-wrapper">
+                <input type="submit" value="Создать заявку">
+            </div>
+        </div>
+    </form>
+</section>

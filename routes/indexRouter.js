@@ -28,7 +28,7 @@ requestsRouter.get('/list', (req, res, next) => {
         'request.date_issue,\n' +
         'request.device,\n' +
         'request.problem,\n' +
-        '(SUM(component.cost) + service.cost) cost,\n' +
+        'IFNULL((SUM(component.cost) + service.cost), service.cost) cost,\n' +
         'status.name as status_name,\n' +
         'CONCAT(client.name, " ", client.last_name) as client_name,\n' +
         'service.name as service_name,\n' +
@@ -42,7 +42,7 @@ requestsRouter.get('/list', (req, res, next) => {
         'request.service_id=service.id\n' +
         'JOIN worker ON\n' +
         'request.worker_id=worker.id\n' +
-        'INNER JOIN component ON \n' +
+        'LEFT JOIN component ON \n' +
         'request.id = component.request_id\n' +
         'GROUP BY request.id;\n' +
         ';';
@@ -189,10 +189,55 @@ requestsRouter.get('/delete/:id', urlencodedParser, (req, res) => {
     );
 });
 requestsRouter.get('/create', urlencodedParser, (req, res) => {
+    let services;
+    pool.query('SELECT * FROM service;', (error, result) => {
+        if (error) throw error;
 
+        services = result;
+    });
+
+    let workers;
+    pool.query('SELECT\n' +
+        'id,\n' +
+        'CONCAT(last_name, \' \', name, \' \', patronymic) as name\n' +
+        'FROM worker;', (error, result) => {
+        if (error) throw error;
+
+        workers = result;
+    });
+
+    // TODO убрать это безобразие
+    setTimeout(() => {
+        res.render('create/createRequest', {
+            title: 'Создание заявки',
+            services: services,
+            workers: workers
+        });
+    }, 1000)
 });
 requestsRouter.post('/create', urlencodedParser, (req, res) => {
-
+    if (!req.body) {
+        return res.sendStatus(400);
+    }
+    console.log(req.body);
+    pool.query(
+        'INSERT INTO request (date_admission, date_issue, device, problem, cost, status_id, client_id, service_id, worker_id) VALUES\n' +
+        '(\n' +
+        '\'' + new Date().toISOString().slice(0, 10) + '\', \n' +
+        'null, \n' +
+        '\'' + req.body.device + '\', \n' +
+        '\'' + req.body.problem + '\', \n' +
+        'null, \n' +
+        '\'1\', \n' +
+        '\'' + req.body.client_id + '\', \n' +
+        '\'' + req.body.service_id + '\', \n' +
+        '\'' + req.body.worker_id + '\'\n' +
+        ');',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/requests/list');
+        }
+    );
 });
 router.get('/detail/:id', (req, res) => {
     let components;
