@@ -56,6 +56,22 @@ requestsRouter.get('/list', (req, res, next) => {
     });
 });
 requestsRouter.get('/edit/:id', urlencodedParser, (req, res, next) => {
+    let components;
+    pool.query('SELECT \n' +
+        'component.id,\n' +
+        'component.name,\n' +
+        'component.cost,\n' +
+        'component.request_id,\n' +
+        'vendor.company as vendor_name\n' +
+        'FROM component\n' +
+        'JOIN vendor ON\n' +
+        'component.vendor_id=vendor.id\n' +
+        'WHERE request_id=' + req.params["id"] + ';', (error, result) => {
+        if (error) throw error;
+
+        components = result;
+    });
+
     let statuses;
     pool.query('SELECT * FROM status;', (error, result) => {
         if (error) throw error;
@@ -118,19 +134,57 @@ requestsRouter.get('/edit/:id', urlencodedParser, (req, res, next) => {
             request: request,
             statuses: statuses,
             services: services,
-            workers: workers
+            workers: workers,
+            components: components
         });
     });
 });
 requestsRouter.post('/edit/:id', urlencodedParser, (req, res) => {
 
 });
+requestsRouter.get('/edit/:id/components/delete/:component', (req, res) => {
+    console.log('\n\n\n' + req.params["id"] + '\n\n\n');
+    pool.query(
+
+        'DELETE FROM component WHERE id=' + req.params["component"] + ';',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/requests/edit/' + req.params["id"]);
+        }
+    );
+});
+requestsRouter.get('/components/add/:requestId', (req, res) => {
+    console.log('\n\n\n' + req.params["requestId"] + '\n\n\n');
+    res.render('create/createComponent', {
+        title: 'Добавление нового компонента к заявке №' + req.params["requestId"],
+        request: req.params["requestId"]
+    })
+});
+requestsRouter.post('/components/add/:requestId', (req, res) => {
+    if (!req.body) {
+        return res.sendStatus(400);
+    }
+    console.log(req.body);
+    pool.query(
+        'INSERT INTO component (name, cost, request_id, vendor_id) VALUES\n' +
+        '(\n' +
+        '\'' + req.body.name + '\', \n' +
+        '\'' + req.body.cost + '\',\n' +
+        ' \'' + req.body.request_id + '\', \n' +
+        ' \'' + req.body.vendor_id + '\'\n' +
+        ' );',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/requests/edit/' + req.params["requestId"]);
+        }
+    );
+});
 requestsRouter.get('/delete/:id', urlencodedParser, (req, res) => {
     pool.query(
         'DELETE FROM request WHERE id=' + req.params["id"] + ';',
         (err) => {
             if (err) console.log(err);
-            res.redirect('/request/list');
+            res.redirect('/requests/list');
         }
     );
 });

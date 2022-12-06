@@ -1,46 +1,47 @@
 <section>
-    <h1>Создание клиента:</h1>
+    <h1>Создание компонента для заявки {{request}}:</h1>
     <form method="post">
         <div class="edit-section">
             <div class="field">
-                <span class="field__header">Имя</span>
+                <span class="field__header">Название</span>
                 <input
                         class="field__input"
                         type="text"
-                        name="firstName"
-                        placeholder="Иван"
+                        name="name"
+                        placeholder="Резистор"
                 >
             </div>
             <div class="field">
-                <span class="field__header">Фамилия</span>
+                <span class="field__header">Цена</span>
                 <input
                         class="field__input"
                         type="text"
-                        name="secondName"
-                        placeholder="Иванов"
+                        name="cost"
+                        placeholder="400"
                 >
             </div>
             <div class="field">
-                <span class="field__header">Email</span>
+                <span class="field__header">id заявки</span>
                 <input
+                        disabled
                         class="field__input"
                         type="text"
-                        name="email"
-                        placeholder="example@email.com"
+                        name="request_id"
+                        value="{{request}}"
                 >
             </div>
             <div class="field">
-                <span class="field__header">Телефон</span>
+                <span class="field__header">id поставщика</span>
                 <input
                         class="field__input"
                         type="text"
-                        name="phone"
-                        placeholder="+7 (xxx) xxx-xx-xx"
+                        name="vendor_id"
+                        placeholder="0"
                 >
             </div>
 
             <div class="actions-wrapper">
-                <input type="submit" value="Создать клиента">
+                <input type="submit" value="Создать компонент и вернуться к редактированию">
             </div>
         </div>
     </form>
