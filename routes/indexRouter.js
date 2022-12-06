@@ -55,9 +55,76 @@ requestsRouter.get('/list', (req, res, next) => {
         });
     });
 });
-requestsRouter.get('/detail/:id', (req, res) => {})
-requestsRouter.get('/edit/:id', urlencodedParser, (req, res, next) => {});
-requestsRouter.post('/edit/:id', urlencodedParser, (req, res) => {});
+requestsRouter.get('/edit/:id', urlencodedParser, (req, res, next) => {
+    let statuses;
+    pool.query('SELECT * FROM status;', (error, result) => {
+        if (error) throw error;
+
+        statuses = result;
+    });
+    let services;
+    pool.query('SELECT * FROM service;', (error, result) => {
+        if (error) throw error;
+
+        services = result;
+    });
+    let workers;
+    pool.query('SELECT\n' +
+        'id,\n' +
+        'CONCAT(last_name, \' \', name, \' \', patronymic) as name\n' +
+        'FROM worker;', (error, result) => {
+        if (error) throw error;
+
+        workers = result;
+    });
+
+    pool.query('SELECT\n' +
+        'request.id,\n' +
+        'request.date_admission,\n' +
+        'request.date_issue,\n' +
+        'request.device,\n' +
+        'request.problem,\n' +
+        '(SUM(component.cost) + service.cost) cost,\n' +
+        'request.status_id,\n' +
+        'status.name as status_name,\n' +
+        'request.client_id,\n' +
+        'CONCAT(client.name, " ", client.last_name) as client_name,\n' +
+        'request.service_id,\n' +
+        'service.name as service_name,\n' +
+        'request.worker_id,\n' +
+        'CONCAT(worker.name, " ", worker.last_name) as worker_name,\n' +
+        'service.cost as service_cost\n' +
+        'FROM request\n' +
+        'JOIN status ON\n' +
+        'request.status_id=status.id\n' +
+        'JOIN client ON\n' +
+        'request.client_id=client.id\n' +
+        'JOIN service ON\n' +
+        'request.service_id=service.id\n' +
+        'JOIN worker ON\n' +
+        'request.worker_id=worker.id\n' +
+        'INNER JOIN component ON \n' +
+        'request.id = component.request_id\n' +
+        'WHERE request.id=' + req.params["id"] + '\n' +
+        ';', (error, result) => {
+        if (error) throw error;
+
+        let request = result[0];
+        request.date_admission = request.date_admission.toISOString().slice(0, 16);
+        request.date_issue = request.date_issue.toISOString().slice(0, 16);
+
+        res.render('edit/editRequest', {
+            title: 'Редактрирование заявки №' + req.params["id"],
+            request: request,
+            statuses: statuses,
+            services: services,
+            workers: workers
+        });
+    });
+});
+requestsRouter.post('/edit/:id', urlencodedParser, (req, res) => {
+
+});
 requestsRouter.get('/delete/:id', urlencodedParser, (req, res) => {
     pool.query(
         'DELETE FROM request WHERE id=' + req.params["id"] + ';',
@@ -67,11 +134,24 @@ requestsRouter.get('/delete/:id', urlencodedParser, (req, res) => {
         }
     );
 });
-requestsRouter.get('/create', urlencodedParser, (req, res) => {});
-requestsRouter.post('/create', urlencodedParser, (req, res) => {});
+requestsRouter.get('/create', urlencodedParser, (req, res) => {
+
+});
+requestsRouter.post('/create', urlencodedParser, (req, res) => {
+
+});
 router.get('/detail/:id', (req, res) => {
     let components;
-    pool.query('SELECT * FROM component WHERE request_id=' + req.params["id"] + ';', (error, result) => {
+    pool.query('SELECT \n' +
+        'component.id,\n' +
+        'component.name,\n' +
+        'component.cost,\n' +
+        'component.request_id,\n' +
+        'vendor.company as vendor_name\n' +
+        'FROM component\n' +
+        'JOIN vendor ON\n' +
+        'component.vendor_id=vendor.id\n' +
+        'WHERE request_id=' + req.params["id"] + ';', (error, result) => {
         if (error) throw error;
 
         components = result;
@@ -105,6 +185,8 @@ router.get('/detail/:id', (req, res) => {
         if (error) throw error;
 
         let request = result[0];
+        request.date_admission = request.date_admission.toISOString();
+        request.date_issue = request.date_issue.toISOString();
         res.render('detail', {
             title: 'Детализация заявки №' + req.params["id"],
             request: request,

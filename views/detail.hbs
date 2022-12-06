@@ -27,7 +27,7 @@
                         <th>id</th>
                         <th>Название</th>
                         <th>Цена</th>
-                        <th>id поставщика</th>
+                        <th>Поставщик</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -36,7 +36,7 @@
                             <td>{{this.id}}</td>
                             <td>{{this.name}}</td>
                             <td>{{this.cost}}</td>
-                            <td>{{this.vendor_id}}</td>
+                            <td>{{this.vendor_name}}</td>
                         </tr>
                     {{/each}}
                         <tr>
@@ -49,7 +49,7 @@
                             <td></td>
                             <td>Тотальная цена</td>
                             <td><b>{{request.cost}}</b></td>
-                            <td></td>
+                            <td>Сервис</td>
                         </tr>
                     </tbody>
                 </table>

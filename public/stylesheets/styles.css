@@ -79,10 +79,17 @@ input {
   outline: none;
   background-color: #EEEEEE;
   border: none;
-  padding: 10px 10px; }
+  padding: 10px 10px;
+  border-radius: 0; }
   input:active, input:hover, input:focus {
     outline: 0;
     outline-offset: 0; }
+
+select {
+  height: 40px;
+  background-color: #EEEEEE;
+  border: none;
+  border-radius: 0; }
 
 h1 {
   color: var(--heading-color);
@@ -243,10 +250,26 @@ nav li:hover > .submenu {
   .edit-section .field {
     display: flex;
     flex-direction: column; }
+    .edit-section .field span {
+      font-size: 16px; }
+    .edit-section .field__header {
+      font-size: 20px !important; }
   .edit-section .actions-wrapper {
     display: flex;
     justify-content: center;
     gap: 20px; }
+    .edit-section .actions-wrapper a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #EEEEEE;
+      color: black;
+      padding: 0px 10px;
+      height: 44px; }
+    .edit-section .actions-wrapper a:hover {
+      background-color: var(--header-bg-color);
+      color: white;
+      cursor: pointer; }
     .edit-section .actions-wrapper input:hover {
       background-color: var(--header-bg-color);
       color: white;

@@ -7,8 +7,12 @@
     display: flex;
     flex-direction: column;
 
-    &__header {
+    span {
+      font-size: 16px;
+    }
 
+    &__header {
+      font-size: 20px !important;
     }
 
     &__input {
@@ -20,6 +24,22 @@
     display: flex;
     justify-content: center;
     gap: 20px;
+
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #EEEEEE;
+      color: black;
+      padding: 0px 10px;
+      height: 44px;
+    }
+
+    a:hover {
+      background-color: var(--header-bg-color);
+      color: white;
+      cursor: pointer;
+    }
 
     input:hover {
       background-color: var(--header-bg-color);

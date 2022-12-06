@@ -13,7 +13,10 @@ let app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-hbs.registerPartials(__dirname + '/views/partials')
+hbs.registerPartials(__dirname + '/views/partials');
+hbs.registerHelper('equals', function(arg1, arg2, options) {
+    return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+});
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -27,7 +30,6 @@ app.use(sassMiddleware({
     debug: true
 }));
 app.use(express.static(path.join(__dirname, 'public')));
-
 
 app.use('/', indexRouter);
 

@@ -1,0 +1,83 @@
+<section>
+    <h1>Редактирование заявки №{{request.id}}:</h1>
+    <form method="post">
+        <div class="edit-section">
+            <div class="field">
+                <span class="field__header">Дата поступления</span>
+                <input
+                        class="field__input"
+                        type="datetime-local"
+                        value="{{request.date_admission}}"
+                        name="dateAdmission"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Дата решения</span>
+                <input
+                        class="field__input"
+                        type="datetime-local"
+                        value="{{request.date_issue}}"
+                        name="dateIssue"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Устройство</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        value="{{request.device}}"
+                        name="device"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Проблема</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        value="{{request.problem}}"
+                        name="problem"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Статус</span>
+                <select name="status">
+                    {{#each statuses}}
+                        <option {{#equals this.id ../request.status_id}}selected{{/equals}} value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="field">
+                <span class="field__header">Клиент:</span>
+                <span>{{request.client_name}}</span>
+                <span>Введите id клиента:</span>
+                <input
+                        class="field__input"
+                        type="text"
+                        value="{{request.client_id}}"
+                        name="client"
+                >
+            </div>
+            <div class="field">
+                <span class="field__header">Услуга</span>
+                <select name="service">
+                    {{#each services}}
+                        <option {{#equals this.id ../request.service_id}}selected{{/equals}} value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="field">
+                <span class="field__header">Работник</span>
+                <select name="worker">
+                    {{#each workers}}
+                        <option {{#equals this.id ../request.worker_id}}selected{{/equals}} value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                </select>
+            </div>
+
+            <div class="actions-wrapper">
+                <input type="submit" value="Сохранить информацию">
+                <a href="/vendors/delete/{{request.id}}" class="btn-delete">Удалить запись</a>
+            </div>
+        </div>
+    </form>
+</section>
