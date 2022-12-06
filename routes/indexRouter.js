@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const {response} = require("express");
+const {response, request} = require("express");
 const pool = require("../data/config");
 const urlencodedParser = express.urlencoded({extended: false});
 
@@ -28,7 +28,7 @@ requestsRouter.get('/list', (req, res, next) => {
         'request.date_issue,\n' +
         'request.device,\n' +
         'request.problem,\n' +
-        'SUM(component.cost) cost,\n' +
+        '(SUM(component.cost) + service.cost) cost,\n' +
         'status.name as status_name,\n' +
         'CONCAT(client.name, " ", client.last_name) as client_name,\n' +
         'service.name as service_name,\n' +
@@ -69,6 +69,49 @@ requestsRouter.get('/delete/:id', urlencodedParser, (req, res) => {
 });
 requestsRouter.get('/create', urlencodedParser, (req, res) => {});
 requestsRouter.post('/create', urlencodedParser, (req, res) => {});
+router.get('/detail/:id', (req, res) => {
+    let components;
+    pool.query('SELECT * FROM component WHERE request_id=' + req.params["id"] + ';', (error, result) => {
+        if (error) throw error;
+
+        components = result;
+    });
+
+    pool.query('SELECT\n' +
+        'request.id,\n' +
+        'request.date_admission,\n' +
+        'request.date_issue,\n' +
+        'request.device,\n' +
+        'request.problem,\n' +
+        '(SUM(component.cost) + service.cost) cost,\n' +
+        'status.name as status_name,\n' +
+        'CONCAT(client.name, " ", client.last_name) as client_name,\n' +
+        'service.name as service_name,\n' +
+        'CONCAT(worker.name, " ", worker.last_name) as worker_name,\n' +
+        'service.cost as service_cost\n' +
+        'FROM request\n' +
+        'JOIN status ON\n' +
+        'request.status_id=status.id\n' +
+        'JOIN client ON\n' +
+        'request.client_id=client.id\n' +
+        'JOIN service ON\n' +
+        'request.service_id=service.id\n' +
+        'JOIN worker ON\n' +
+        'request.worker_id=worker.id\n' +
+        'INNER JOIN component ON \n' +
+        'request.id = component.request_id\n' +
+        'WHERE request.id=' + req.params["id"] + '\n' +
+        ';', (error, result) => {
+        if (error) throw error;
+
+        let request = result[0];
+        res.render('detail', {
+            title: 'Детализация заявки №' + req.params["id"],
+            request: request,
+            components: components
+        });
+    });
+});
 
 clientsRouter.get('/list', (req, res, next) => {
     let sql = 'SELECT\n' +

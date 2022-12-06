@@ -1,0 +1,79 @@
+<section>
+    <h1>Детализация заявки №{{request.id}}:</h1>
+    <form method="post">
+        <div class="edit-section">
+            <div class="field">
+                <span class="field__header">Дата поступления</span>
+                <span>{{request.date_admission}}</span>
+            </div>
+            <div class="field">
+                <span class="field__header">Дата выпуска</span>
+                <span>{{request.date_issue}}</span>
+            </div>
+            <div class="field">
+                <span class="field__header">Устройство</span>
+                <span>{{request.device}}</span>
+            </div>
+            <div class="field">
+                <span class="field__header">Проблема</span>
+                <span>{{request.problem}}</span>
+            </div>
+            <div class="field">
+                <span class="field__header">Цена</span>
+                <span>Компоненты</span>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>id</th>
+                        <th>Название</th>
+                        <th>Цена</th>
+                        <th>id поставщика</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {{#each components}}
+                        <tr>
+                            <td>{{this.id}}</td>
+                            <td>{{this.name}}</td>
+                            <td>{{this.cost}}</td>
+                            <td>{{this.vendor_id}}</td>
+                        </tr>
+                    {{/each}}
+                        <tr>
+                            <td>Услуга</td>
+                            <td>{{request.service_name}}</td>
+                            <td>{{request.service_cost}}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>Тотальная цена</td>
+                            <td><b>{{request.cost}}</b></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="field">
+                <span class="field__header">Статус</span>
+                <span>{{request.status_name}}</span>
+            </div>
+            <div class="field">
+                <span class="field__header">Клиент</span>
+                <span>{{request.client_name}}</span>
+            </div>
+            <div class="field">
+                <span class="field__header">Услуга</span>
+                <span>{{request.service_name}}</span>
+            </div>
+            <div class="field">
+                <span class="field__header">Логин</span>
+                <span>{{request.worker_name}}</span>
+            </div>
+
+            <div class="actions-wrapper">
+                <a href="/requests/list">Обратно к списку</a>
+            </div>
+        </div>
+    </form>
+</section>
