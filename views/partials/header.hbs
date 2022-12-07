@@ -77,35 +77,89 @@
                                 </li>
                             </ul>
                         </li>
-                        <!--
                         <li>
                             <a>Клиенты</a>
                             <ul class="submenu">
-                                <li><a>По id<input type="number"></a></li>
-                                <li><a>Электронной почте<input type="text"></a></li>
+                                <li>
+                                    <a>По id
+                                        <form action="/clients/list">
+                                            <input type="text" value="1" name="filter" class="hidden">
+                                            <input type="number" name="id">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>Электронной почте
+                                        <form action="/clients/list">
+                                            <input type="text" value="1" name="filter" class="hidden">
+                                            <input type="text" name="email">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li>
                             <a>Поставщики</a>
                             <ul class="submenu">
-                                <li><a>По id<input type="number"></a></li>
-                                <li><a>Электронной почте<input type="text"></a></li>
+                                <li>
+                                    <a>По id
+                                        <form action="/vendors/list">
+                                            <input type="text" value="1" name="filter" class="hidden">
+                                            <input type="number" name="id">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>Электронной почте
+                                        <form action="/vendors/list">
+                                            <input type="text" value="1" name="filter" class="hidden">
+                                            <input type="text" name="email">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/workers/find">Работники</a>
+                            <a>Работники</a>
                             <ul class="submenu">
-                                <li><a>По id<input type="number"></a></li>
-                                <li><a>Электронной почте<input type="text"></a></li>
+                                <li>
+                                    <a>По id
+                                        <form action="/workers/list">
+                                            <input type="text" value="1" name="filter" class="hidden">
+                                            <input type="number" name="id">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>Электронной почте
+                                        <form action="/workers/list">
+                                            <input type="text" value="1" name="filter" class="hidden">
+                                            <input type="text" name="email">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/services/find">Услуги</a>
+                            <a>Услуги</a>
                             <ul class="submenu">
-                                <li><a>По id<input type="number"></a></li>
+                                <li>
+                                    <a>По id
+                                        <form action="/services/list">
+                                            <input type="text" value="1" name="filter" class="hidden">
+                                            <input type="number" name="id">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
                             </ul>
                         </li>
-                        -->
                     </ul>
                 </li>
                 <li>

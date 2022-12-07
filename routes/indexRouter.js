@@ -47,23 +47,23 @@ requestsRouter.get('/list', (req, res, next) => {
         'LEFT JOIN component ON \n' +
         'request.id = component.request_id\n';
     if (!(req.query.filter)) {
-        sql += 'GROUP BY request.id;';
+        sql += ' GROUP BY request.id;';
     }
     else if (req.query.filter == 1 && req.query.id) {
-        sql += 'WHERE request.id=' + req.query.id + ';';
+        sql += ' WHERE request.id=' + req.query.id + ';';
     }
     else if (req.query.filter == 1 && req.query.client_id) {
-        sql += 'WHERE client_id=' + req.query.client_id + ' GROUP BY request.id;';
+        sql += ' WHERE client_id=' + req.query.client_id + ' GROUP BY request.id;';
     }
     else if (req.query.filter == 1 && req.query.worker_id) {
-        sql += 'WHERE worker_id=' + req.query.worker_id + ' GROUP BY request.id;';
+        sql += ' WHERE worker_id=' + req.query.worker_id + ' GROUP BY request.id;';
     }
     else if (req.query.filter == 2) {
-        sql += 'GROUP BY request.id\n' +
+        sql += ' GROUP BY request.id\n' +
             'ORDER BY cost asc;';
     }
     else if (req.query.filter == 3) {
-        sql += 'GROUP BY request.id\n' +
+        sql += ' GROUP BY request.id\n' +
             'ORDER BY cost desc;';
     }
 
@@ -350,6 +350,12 @@ clientsRouter.get('/list', (req, res, next) => {
     if (!(req.query.filter)) {
         sql += ';';
     }
+    else if (req.query.filter == 1 && req.query.id) {
+        sql += ' WHERE client.id=' + req.query.id + ';';
+    }
+    else if (req.query.filter == 1 && req.query.email) {
+        sql += ' WHERE client.email=\'' + req.query.email + '\';';
+    }
     else if (req.query.filter == 2) {
         sql += ' ORDER BY client.id asc;';
     }
@@ -435,6 +441,12 @@ vendorsRouter.get('/list', (req, res, next) => {
     let sql = 'SELECT * FROM vendor';
     if (!(req.query.filter)) {
         sql += ';';
+    }
+    else if (req.query.filter == 1 && req.query.id) {
+        sql += ' WHERE vendor.id=' + req.query.id + ';';
+    }
+    else if (req.query.filter == 1 && req.query.email) {
+        sql += ' WHERE vendor.email=\'' + req.query.email + '\';';
     }
     else if (req.query.filter == 2) {
         sql += ' ORDER BY vendor.id asc;';
@@ -524,6 +536,12 @@ workersRouter.get('/list', (req, res, next) => {
     let sql = 'SELECT * FROM worker';
     if (!(req.query.filter)) {
         sql += ';';
+    }
+    else if (req.query.filter == 1 && req.query.id) {
+        sql += ' WHERE worker.id=' + req.query.id + ';';
+    }
+    else if (req.query.filter == 1 && req.query.email) {
+        sql += ' WHERE worker.email=\'' + req.query.email + '\';';
     }
     else if (req.query.filter == 2) {
         sql += ' ORDER BY worker.id asc;';
@@ -625,6 +643,9 @@ servicesRouter.get('/list', (req, res, next) => {
     let sql = 'SELECT * FROM service';
     if (!(req.query.filter)) {
         sql += ';';
+    }
+    else if (req.query.filter == 1 && req.query.id) {
+        sql += ' WHERE service.id=' + req.query.id + ';';
     }
     else if (req.query.filter == 2) {
         sql += ' ORDER BY cost asc;';
