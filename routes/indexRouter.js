@@ -58,6 +58,14 @@ requestsRouter.get('/list', (req, res, next) => {
     else if (req.query.filter == 1 && req.query.worker_id) {
         sql += 'WHERE worker_id=' + req.query.worker_id + ' GROUP BY request.id;';
     }
+    else if (req.query.filter == 2) {
+        sql += 'GROUP BY request.id\n' +
+            'ORDER BY cost asc;';
+    }
+    else if (req.query.filter == 3) {
+        sql += 'GROUP BY request.id\n' +
+            'ORDER BY cost desc;';
+    }
 
     pool.query(sql, (error, result) => {
         if (error) throw error;
