@@ -100,7 +100,7 @@ requestsRouter.get('/edit/:id', urlencodedParser, (req, res, next) => {
         'request.date_issue,\n' +
         'request.device,\n' +
         'request.problem,\n' +
-        '(SUM(component.cost) + service.cost) cost,\n' +
+        'IFNULL((SUM(component.cost) + service.cost), service.cost) cost,\n' +
         'request.status_id,\n' +
         'status.name as status_name,\n' +
         'request.client_id,\n' +
@@ -119,7 +119,7 @@ requestsRouter.get('/edit/:id', urlencodedParser, (req, res, next) => {
         'request.service_id=service.id\n' +
         'JOIN worker ON\n' +
         'request.worker_id=worker.id\n' +
-        'INNER JOIN component ON \n' +
+        'LEFT JOIN component ON \n' +
         'request.id = component.request_id\n' +
         'WHERE request.id=' + req.params["id"] + '\n' +
         ';', (error, result) => {
