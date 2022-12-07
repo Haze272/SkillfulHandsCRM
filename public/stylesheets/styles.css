@@ -85,6 +85,9 @@ input {
     outline: 0;
     outline-offset: 0; }
 
+input.hidden {
+  display: none; }
+
 select {
   height: 40px;
   background-color: #EEEEEE;

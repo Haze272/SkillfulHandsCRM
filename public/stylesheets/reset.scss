@@ -92,6 +92,10 @@ input {
   }
 }
 
+input.hidden {
+  display: none;
+}
+
 select {
   height: 40px;
   background-color: #EEEEEE;

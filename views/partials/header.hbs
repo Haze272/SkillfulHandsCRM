@@ -12,7 +12,8 @@
         </div>
         <nav>
             <ul class="topmenu">
-                <li><a class="">Создать</a>
+                <li>
+                    <a class="">Создать</a>
                     <ul class="submenu">
                         <li>
                             <a href="/requests/create" class="submenu-link">Заявка</a>
@@ -33,6 +34,80 @@
                 </li>
                 <li>
                     <a>Список</a>
+                    <ul class="submenu">
+                        <li><a href="/requests/list">Заявки</a></li>
+                        <li><a href="/clients/list">Клиенты</a></li>
+                        <li><a href="/vendors/list">Поставщики</a></li>
+                        <li><a href="/workers/list">Работники</a></li>
+                        <li><a href="/services/list">Услуги</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a>Поиск</a>
+                    <ul class="submenu">
+                        <li>
+                            <a>Заявки</a>
+                            <ul class="submenu">
+                                <li>
+                                    <a>По id
+                                        <form action="/requests/list">
+                                            <input type="text" value="1" name="filter" class="hidden">
+                                            <input type="number" name="id">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>По id клиента
+                                        <form action="/requests/list">
+                                            <input type="text" value="1" name="filter" class="hidden">
+                                            <input type="number" name="client_id">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>По id работника
+                                        <form action="/requests/list">
+                                            <input type="text" value="1" name="filter" class="hidden">
+                                            <input type="number" name="worker_id">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a>Клиенты</a>
+                            <ul class="submenu">
+                                <li><a>По id<input type="number"></a></li>
+                                <li><a>Электронной почте<input type="text"></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a>Поставщики</a>
+                            <ul class="submenu">
+                                <li><a>По id<input type="number"></a></li>
+                                <li><a>Электронной почте<input type="text"></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="/workers/find">Работники</a>
+                            <ul class="submenu">
+                                <li><a>По id<input type="number"></a></li>
+                                <li><a>Электронной почте<input type="text"></a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="/services/find">Услуги</a>
+                            <ul class="submenu">
+                                <li><a>По id<input type="number"></a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a>Фильтр</a>
                     <ul class="submenu">
                         <li><a href="/requests/list">Заявки</a></li>
                         <li><a href="/clients/list">Клиенты</a></li>
