@@ -346,7 +346,16 @@ clientsRouter.get('/list', (req, res, next) => {
         'CONCAT(client.name, " ", client.last_name) as name,\n' +
         'client.email,\n' +
         'client.phone\n' +
-        'FROM client;';
+        'FROM client';
+    if (!(req.query.filter)) {
+        sql += ';';
+    }
+    else if (req.query.filter == 2) {
+        sql += ' ORDER BY client.id asc;';
+    }
+    else if (req.query.filter == 3) {
+        sql += ' ORDER BY client.id desc;';
+    }
     pool.query(sql, (error, result) => {
         if (error) throw error;
 
@@ -424,6 +433,15 @@ clientsRouter.post('/create', urlencodedParser, (req, res) => {
 
 vendorsRouter.get('/list', (req, res, next) => {
     let sql = 'SELECT * FROM vendor';
+    if (!(req.query.filter)) {
+        sql += ';';
+    }
+    else if (req.query.filter == 2) {
+        sql += ' ORDER BY vendor.id asc;';
+    }
+    else if (req.query.filter == 3) {
+        sql += ' ORDER BY vendor.id desc;';
+    }
     pool.query(sql, (error, result) => {
         if (error) throw error;
 
@@ -504,6 +522,16 @@ vendorsRouter.post('/create', urlencodedParser, (req, res) => {
 
 workersRouter.get('/list', (req, res, next) => {
     let sql = 'SELECT * FROM worker';
+    if (!(req.query.filter)) {
+        sql += ';';
+    }
+    else if (req.query.filter == 2) {
+        sql += ' ORDER BY worker.id asc;';
+    }
+    else if (req.query.filter == 3) {
+        sql += ' ORDER BY worker.id desc;';
+    }
+
     pool.query(sql, (error, result) => {
         if (error) throw error;
 
@@ -595,6 +623,15 @@ workersRouter.post('/create', urlencodedParser, (req, res) => {
 
 servicesRouter.get('/list', (req, res, next) => {
     let sql = 'SELECT * FROM service';
+    if (!(req.query.filter)) {
+        sql += ';';
+    }
+    else if (req.query.filter == 2) {
+        sql += ' ORDER BY cost asc;';
+    }
+    else if (req.query.filter == 3) {
+        sql += ' ORDER BY cost desc;';
+    }
     pool.query(sql, (error, result) => {
         if (error) throw error;
 

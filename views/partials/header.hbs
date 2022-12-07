@@ -132,12 +132,90 @@
                                 </li>
                             </ul>
                         </li>
-                        <!--
-                        <li><a href="/clients/list">Клиенты</a></li>
-                        <li><a href="/vendors/list">Поставщики</a></li>
-                        <li><a href="/workers/list">Работники</a></li>
-                        <li><a href="/services/list">Услуги</a></li>
-                        -->
+                        <li>
+                            <a>Клиенты</a>
+                            <ul class="submenu">
+                                <li>
+                                    <a>id по возрастанию
+                                        <form action="/clients/list">
+                                            <input type="text" value="2" name="filter" class="hidden">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>id по убыванию
+                                        <form action="/clients/list">
+                                            <input type="text" value="3" name="filter" class="hidden">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a>Поставщики</a>
+                            <ul class="submenu">
+                                <li>
+                                    <a>id по возрастанию
+                                        <form action="/vendors/list">
+                                            <input type="text" value="2" name="filter" class="hidden">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>id по убыванию
+                                        <form action="/vendors/list">
+                                            <input type="text" value="3" name="filter" class="hidden">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a>Работники</a>
+                            <ul class="submenu">
+                                <li>
+                                    <a>id по возрастанию
+                                        <form action="/workers/list">
+                                            <input type="text" value="2" name="filter" class="hidden">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>id по убыванию
+                                        <form action="/workers/list">
+                                            <input type="text" value="3" name="filter" class="hidden">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a>Услуги</a>
+                            <ul class="submenu">
+                                <li>
+                                    <a>Цена по возрастанию
+                                        <form action="/services/list">
+                                            <input type="text" value="2" name="filter" class="hidden">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a>Цена по убыванию
+                                        <form action="/services/list">
+                                            <input type="text" value="3" name="filter" class="hidden">
+                                            <input type="submit">
+                                        </form>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
                     </ul>
                 </li>
             </ul>
