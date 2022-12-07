@@ -126,8 +126,13 @@ requestsRouter.get('/edit/:id', urlencodedParser, (req, res, next) => {
         if (error) throw error;
 
         let request = result[0];
-        request.date_admission = request.date_admission.toISOString().slice(0, 16);
-        request.date_issue = request.date_issue.toISOString().slice(0, 16);
+
+        if (request.date_admission) {
+            request.date_admission = request.date_admission.toISOString().slice(0, 16);
+        }
+        if (request.date_issue) {
+            request.date_issue = request.date_issue.toISOString().slice(0, 16);
+        }
 
         res.render('edit/editRequest', {
             title: 'Редактрирование заявки №' + req.params["id"],
@@ -140,7 +145,27 @@ requestsRouter.get('/edit/:id', urlencodedParser, (req, res, next) => {
     });
 });
 requestsRouter.post('/edit/:id', urlencodedParser, (req, res) => {
-
+    if (!req.body) {
+        return res.sendStatus(400);
+    }
+    console.log(req.body);
+    pool.query(
+        'UPDATE request SET\n' +
+        'date_admission = \'' + req.body.dateAdmission + '\', \n' +
+        'date_issue = \'' + req.body.dateIssue + '\', \n' +
+        'device = \'' + req.body.device + '\', \n' +
+        'problem = \'' + req.body.problem + '\', \n' +
+        'cost = null, \n' +
+        'status_id = \'' + req.body.status + '\',\n' +
+        'client_id = \'' + req.body.client + '\',\n' +
+        'service_id = \'' + req.body.service + '\', \n' +
+        'worker_id = \'' + req.body.worker + '\'\n' +
+        'WHERE id = \'' + req.params["id"] + '\';',
+        (err) => {
+            if (err) console.log(err);
+            res.redirect('/requests/list');
+        }
+    );
 });
 requestsRouter.get('/edit/:id/components/delete/:component', (req, res) => {
     console.log('\n\n\n' + req.params["id"] + '\n\n\n');
@@ -223,7 +248,7 @@ requestsRouter.post('/create', urlencodedParser, (req, res) => {
     pool.query(
         'INSERT INTO request (date_admission, date_issue, device, problem, cost, status_id, client_id, service_id, worker_id) VALUES\n' +
         '(\n' +
-        '\'' + new Date().toISOString().slice(0, 10) + '\', \n' +
+        '\'' + req.body.dateAdmission /*new Date().toISOString().slice(0, 10)*/ + '\', \n' +
         'null, \n' +
         '\'' + req.body.device + '\', \n' +
         '\'' + req.body.problem + '\', \n' +
