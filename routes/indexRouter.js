@@ -22,114 +22,41 @@ router.use('/workers', workersRouter);
 router.use('/services', servicesRouter);
 
 requestsRouter.get('/list', (req, res, next) => {
-    let sql;
+    let sql = 'SELECT\n' +
+        'request.id,\n' +
+        'request.date_admission,\n' +
+        'request.date_issue,\n' +
+        'request.device,\n' +
+        'request.problem,\n' +
+        'IFNULL((SUM(component.cost) + service.cost), service.cost) cost,\n' +
+        'status.name as status_name,\n' +
+        'request.client_id,\n' +
+        'CONCAT(client.name, " ", client.last_name) as client_name,\n' +
+        'service.name as service_name,\n' +
+        'request.worker_id,\n' +
+        'CONCAT(worker.name, " ", worker.last_name) as worker_name\n' +
+        'FROM request\n' +
+        'JOIN status ON\n' +
+        'request.status_id=status.id\n' +
+        'JOIN client ON\n' +
+        'request.client_id=client.id\n' +
+        'JOIN service ON\n' +
+        'request.service_id=service.id\n' +
+        'JOIN worker ON\n' +
+        'request.worker_id=worker.id\n' +
+        'LEFT JOIN component ON \n' +
+        'request.id = component.request_id\n';
     if (!(req.query.filter)) {
-        sql = 'SELECT\n' +
-            'request.id,\n' +
-            'request.date_admission,\n' +
-            'request.date_issue,\n' +
-            'request.device,\n' +
-            'request.problem,\n' +
-            'IFNULL((SUM(component.cost) + service.cost), service.cost) cost,\n' +
-            'status.name as status_name,\n' +
-            'CONCAT(client.name, " ", client.last_name) as client_name,\n' +
-            'service.name as service_name,\n' +
-            'CONCAT(worker.name, " ", worker.last_name) as worker_name\n' +
-            'FROM request\n' +
-            'JOIN status ON\n' +
-            'request.status_id=status.id\n' +
-            'JOIN client ON\n' +
-            'request.client_id=client.id\n' +
-            'JOIN service ON\n' +
-            'request.service_id=service.id\n' +
-            'JOIN worker ON\n' +
-            'request.worker_id=worker.id\n' +
-            'LEFT JOIN component ON \n' +
-            'request.id = component.request_id\n' +
-            'GROUP BY request.id;\n' +
-            ';';
+        sql += 'GROUP BY request.id;';
     }
     else if (req.query.filter == 1 && req.query.id) {
-        sql = 'SELECT\n' +
-            'request.id,\n' +
-            'request.date_admission,\n' +
-            'request.date_issue,\n' +
-            'request.device,\n' +
-            'request.problem,\n' +
-            'IFNULL((SUM(component.cost) + service.cost), service.cost) cost,\n' +
-            'status.name as status_name,\n' +
-            'CONCAT(client.name, " ", client.last_name) as client_name,\n' +
-            'service.name as service_name,\n' +
-            'CONCAT(worker.name, " ", worker.last_name) as worker_name\n' +
-            'FROM request\n' +
-            'JOIN status ON\n' +
-            'request.status_id=status.id\n' +
-            'JOIN client ON\n' +
-            'request.client_id=client.id\n' +
-            'JOIN service ON\n' +
-            'request.service_id=service.id\n' +
-            'JOIN worker ON\n' +
-            'request.worker_id=worker.id\n' +
-            'LEFT JOIN component ON \n' +
-            'request.id = component.request_id\n' +
-            'WHERE request.id=' + req.query.id + ';\n' +
-            ';';
+        sql += 'WHERE request.id=' + req.query.id + ';';
     }
     else if (req.query.filter == 1 && req.query.client_id) {
-        sql = 'SELECT\n' +
-            'request.id,\n' +
-            'request.date_admission,\n' +
-            'request.date_issue,\n' +
-            'request.device,\n' +
-            'request.problem,\n' +
-            'IFNULL((SUM(component.cost) + service.cost), service.cost) cost,\n' +
-            'status.name as status_name,\n' +
-            'request.client_id,\n' +
-            'CONCAT(client.name, " ", client.last_name) as client_name,\n' +
-            'service.name as service_name,\n' +
-            'request.worker_id,\n' +
-            'CONCAT(worker.name, " ", worker.last_name) as worker_name\n' +
-            'FROM request\n' +
-            'JOIN status ON\n' +
-            'request.status_id=status.id\n' +
-            'JOIN client ON\n' +
-            'request.client_id=client.id\n' +
-            'JOIN service ON\n' +
-            'request.service_id=service.id\n' +
-            'JOIN worker ON\n' +
-            'request.worker_id=worker.id\n' +
-            'LEFT JOIN component ON \n' +
-            'request.id = component.request_id\n' +
-            'WHERE client_id=' + req.query.client_id + '\n' +
-            'GROUP BY request.id;';
+        sql += 'WHERE client_id=' + req.query.client_id + ' GROUP BY request.id;';
     }
     else if (req.query.filter == 1 && req.query.worker_id) {
-        sql = 'SELECT\n' +
-            'request.id,\n' +
-            'request.date_admission,\n' +
-            'request.date_issue,\n' +
-            'request.device,\n' +
-            'request.problem,\n' +
-            'IFNULL((SUM(component.cost) + service.cost), service.cost) cost,\n' +
-            'status.name as status_name,\n' +
-            'request.client_id,\n' +
-            'CONCAT(client.name, " ", client.last_name) as client_name,\n' +
-            'service.name as service_name,\n' +
-            'request.worker_id,\n' +
-            'CONCAT(worker.name, " ", worker.last_name) as worker_name\n' +
-            'FROM request\n' +
-            'JOIN status ON\n' +
-            'request.status_id=status.id\n' +
-            'JOIN client ON\n' +
-            'request.client_id=client.id\n' +
-            'JOIN service ON\n' +
-            'request.service_id=service.id\n' +
-            'JOIN worker ON\n' +
-            'request.worker_id=worker.id\n' +
-            'LEFT JOIN component ON \n' +
-            'request.id = component.request_id\n' +
-            'WHERE worker_id=' + req.query.worker_id + '\n' +
-            'GROUP BY request.id;';
+        sql += 'WHERE worker_id=' + req.query.worker_id + ' GROUP BY request.id;';
     }
 
     pool.query(sql, (error, result) => {
