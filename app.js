@@ -4,7 +4,6 @@ const hbs = require("hbs");
 const logger = require('morgan');
 const cookieParser = require("cookie-parser");
 const createError = require("http-errors");
-const sassMiddleware = require('node-sass-middleware');
 
 const indexRouter = require('./routes/indexRouter');
 
@@ -22,13 +21,6 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(sassMiddleware({
-    src: path.join(__dirname, 'public/'),
-    dest: path.join(__dirname, 'public/'),
-    indentedSyntax: false, // true = .sass and false = .scss
-    sourceMap: true,
-    debug: true
-}));
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
