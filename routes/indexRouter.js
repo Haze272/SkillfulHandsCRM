@@ -1,6 +1,5 @@
 const express = require('express');
 const router = express.Router();
-const {response, request} = require("express");
 const pool = require("../data/config");
 const urlencodedParser = express.urlencoded({extended: false});
 
@@ -10,7 +9,12 @@ vendorsRouter = express.Router({mergeParams: true});
 workersRouter = express.Router({mergeParams: true});
 servicesRouter = express.Router({mergeParams: true});
 
-/* GET home page. */
+/**
+ * GET /
+ * @summary Главная страница
+ * @tags homePage
+ * @return 200 - Успешный ответ
+ */
 router.get('/', (req, res, next) => {
     res.render('index', { title: 'Главная' });
 });
@@ -21,6 +25,13 @@ router.use('/vendors', vendorsRouter);
 router.use('/workers', workersRouter);
 router.use('/services', servicesRouter);
 
+/**
+ * GET /requests/list
+ * @summary Страница со списком заявок
+ * @description Делает SQL-запрос и отрисоывает страницу с учётом полученных данных
+ * @tags getRequestListPage
+ * @return 200 - Успешный ответ
+ */
 requestsRouter.get('/list', (req, res, next) => {
     let sql = 'SELECT\n' +
         'request.id,\n' +
@@ -76,6 +87,14 @@ requestsRouter.get('/list', (req, res, next) => {
         });
     });
 });
+
+/**
+ * GET /requests/edit/:id
+ * @summary Страница с редактированием заявки
+ * @description Делает SQL-запрос и отрисоывает страницу редактирования заявки
+ * @tags getEditPage
+ * @return 200 - Успешный ответ
+ */
 requestsRouter.get('/edit/:id', urlencodedParser, (req, res, next) => {
     let components;
     pool.query('SELECT \n' +
@@ -165,6 +184,14 @@ requestsRouter.get('/edit/:id', urlencodedParser, (req, res, next) => {
         });
     });
 });
+
+/**
+ * POST /requests/edit/:id
+ * @summary Обновление данных по заявке
+ * @description Делает SQL-запрос и перенаправляет на страницу с списком заявок
+ * @tags postUpdatedRequest
+ * @return 200 - Успешный ответ
+ */
 requestsRouter.post('/edit/:id', urlencodedParser, (req, res) => {
     if (!req.body) {
         return res.sendStatus(400);
@@ -188,6 +215,14 @@ requestsRouter.post('/edit/:id', urlencodedParser, (req, res) => {
         }
     );
 });
+
+/**
+ * GET /requests/edit/:id/components/delete/:component
+ * @summary Удаление компонента, привязанного к заявкке
+ * @description Делает SQL-запрос и делает переадресацию на страницу редактирования компнента
+ * @tags deleteRequestComponent
+ * @return 200 - Успешный ответ
+ */
 requestsRouter.get('/edit/:id/components/delete/:component', (req, res) => {
     console.log('\n\n\n' + req.params["id"] + '\n\n\n');
     pool.query(
@@ -199,6 +234,14 @@ requestsRouter.get('/edit/:id/components/delete/:component', (req, res) => {
         }
     );
 });
+
+/**
+ * GET /requests/components/add/:requestId
+ * @summary Страница с добавлением компонента в заявке
+ * @description Открывает страницу добавления заявки
+ * @tags getCreateComponentPage
+ * @return 200 - Успешный ответ
+ */
 requestsRouter.get('/components/add/:requestId', (req, res) => {
     console.log('\n\n\n' + req.params["requestId"] + '\n\n\n');
     res.render('create/createComponent', {
@@ -206,6 +249,14 @@ requestsRouter.get('/components/add/:requestId', (req, res) => {
         request: req.params["requestId"]
     })
 });
+
+/**
+ * POST /requests/components/add/:requestId
+ * @summary Добавление компонента в базу данных
+ * @description Делает SQL-запрос и перенаправляет на страницу с редактированем заявки
+ * @tags createComponent
+ * @return 200 - Успешный ответ
+ */
 requestsRouter.post('/components/add/:requestId', (req, res) => {
     if (!req.body) {
         return res.sendStatus(400);
@@ -225,6 +276,14 @@ requestsRouter.post('/components/add/:requestId', (req, res) => {
         }
     );
 });
+
+/**
+ * GET /requests/delete/:id
+ * @summary Удаление заявки
+ * @description Делает SQL-запрос и перенаправляет на страницу со списком заявок
+ * @tags deleteRequest
+ * @return 200 - Успешный ответ
+ */
 requestsRouter.get('/delete/:id', urlencodedParser, (req, res) => {
     pool.query(
         'DELETE FROM request WHERE id=' + req.params["id"] + ';',
@@ -234,6 +293,14 @@ requestsRouter.get('/delete/:id', urlencodedParser, (req, res) => {
         }
     );
 });
+
+/**
+ * GET /requests/create
+ * @summary Страница создания заявки
+ * @description Делает SQL-запрос и отрисовыает страницу
+ * @tags getCreateRequestPage
+ * @return 200 - Успешный ответ
+ */
 requestsRouter.get('/create', urlencodedParser, (req, res) => {
     let services;
     pool.query('SELECT * FROM service;', (error, result) => {
@@ -261,6 +328,14 @@ requestsRouter.get('/create', urlencodedParser, (req, res) => {
         });
     }, 1000)
 });
+
+/**
+ * POST /requests/create
+ * @summary Добавление заявки в базу данных
+ * @description Делает SQL-запрос и перенаправляет на страницу с списком заявок
+ * @tags createRequest
+ * @return 200 - Успешный ответ
+ */
 requestsRouter.post('/create', urlencodedParser, (req, res) => {
     if (!req.body) {
         return res.sendStatus(400);
@@ -285,6 +360,14 @@ requestsRouter.post('/create', urlencodedParser, (req, res) => {
         }
     );
 });
+
+/**
+ * GET /requests/detail/:id
+ * @summary Страница с детализацией заявки
+ * @description Делает SQL-запрос и отрисовыает страницу
+ * @tags getRequestDetalization
+ * @return 200 - Успешный ответ
+ */
 router.get('/detail/:id', (req, res) => {
     let components;
     pool.query('SELECT \n' +
