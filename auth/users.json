@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "username": "root",
+      "password": "iseedeadpeople"
+    },
+    {
+      "username": "marina",
+      "password": "greedisgood"
+    },
+    {
+      "username": "margo",
+      "password": "warpten"
+    },
+    {
+      "username": "sonya",
+      "password": "noclip"
+    },
+    {
+      "username": "katya",
+      "password": "hesoyam"
+    },
+    {
+      "username": "sasha",
+      "password": "aezakmi"
+    }
+  ]
+}
