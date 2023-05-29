@@ -4,10 +4,9 @@ const hbs = require("hbs");
 const logger = require('morgan');
 const cookieParser = require("cookie-parser");
 const createError = require("http-errors");
-
 const expressJSDocSwagger = require('express-jsdoc-swagger');
-
 const indexRouter = require('./routes/indexRouter');
+const checkAuthorization = require('./auth/checkAuthorization');
 
 const options = {
     info: {
@@ -46,6 +45,17 @@ const options = {
 
 let app = express();
 expressJSDocSwagger(app)(options);
+
+
+
+// Использование middleware проверки авторизации для всех GET-запросов
+app.use((req, res, next) => {
+  if (req.method === 'GET') {
+    checkAuthorization(req, res, next); // Вызов middleware проверки авторизации
+  } else {
+    next(); // Продолжить обработку запроса для других методов HTTP
+  }
+});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

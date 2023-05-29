@@ -13,3 +13,6 @@ public/stylesheets/*.css
 public/stylesheets/*.map
 public/stylesheets/styles.css
 public/stylesheets/styles.css.map
+auth/logging.csv
+auth/logging.json
+auth/users.json
